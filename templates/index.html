@@ -253,6 +253,7 @@
                     <ul style="margin: 10px 0 10px 20px; line-height: 1.8;">
                         <li><strong>cliente</strong>: Dados do cliente (nome, email, telefone)</li>
                         <li><strong>itens</strong>: Lista de esfihas desejadas (tipo e quantidade)</li>
+                        <li><strong>forcar_status_pagamento</strong> (opcional): <code>\"aprovado\"</code> ou <code>\"recusado\"</code> para simular o resultado do pagamento</li>
                     </ul>
                 </div>
 
@@ -264,7 +265,7 @@
                     <div class="code-block">
 Content-Type: application/json
                     </div>
-                    <p><strong>Body (JSON):</strong></p>
+                    <p><strong>Body (JSON):</strong> (exemplo sem forçar pagamento)</p>
                     <div class="code-block">
 {
   <span class="key">"cliente"</span>: {
@@ -287,7 +288,7 @@ Content-Type: application/json
                 </div>
 
                 <div class="example-box">
-                    <h3>3. Exemplo com cURL</h3>
+                    <h3>3. Exemplo com cURL (forçando pagamento aprovado)</h3>
                     <div class="code-block">
 curl -X POST http://localhost:5000/pedidos \
   -H "Content-Type: application/json" \
@@ -300,7 +301,8 @@ curl -X POST http://localhost:5000/pedidos \
     "itens": [
       {"tipo": "esfiha_frango", "quantidade": 5},
       {"tipo": "esfiha_4_queijos", "quantidade": 2}
-    ]
+    ],
+    "forcar_status_pagamento": "aprovado"
   }'
                     </div>
                 </div>

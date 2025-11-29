@@ -21,13 +21,16 @@ def processar_pagamento_handler(event: dict, context: dict) -> dict:
         
         pedido_id = event.get('pedido_id')
         total = event.get('total', 0)
+        # Campo opcional vindo do pedido original para forçar o resultado
+        # Valores esperados: "aprovado" ou "recusado"
+        forcar_status = event.get('forcar_status_pagamento')
         
         if not pedido_id:
             raise ValueError("pedido_id não fornecido")
         
         # Simula chamada ao gateway de pagamentos
         # Em produção, aqui seria uma chamada HTTP real
-        resultado_pagamento = simular_gateway_pagamentos(total)
+        resultado_pagamento = simular_gateway_pagamentos(total, forcar_status)
         
         if resultado_pagamento['status'] == 'aprovado':
             # Atualiza status do pedido
@@ -89,13 +92,19 @@ def processar_pagamento_handler(event: dict, context: dict) -> dict:
         }
 
 
-def simular_gateway_pagamentos(valor: float) -> dict:
+def simular_gateway_pagamentos(valor: float, forcar_status: str | None = None) -> dict:
     """
     Simula chamada ao gateway de pagamentos
     Em produção, seria uma chamada HTTP real
     """
-    # Simula 95% de aprovação
-    aprovado = random.random() > 0.05
+    # Se o status foi forçado (para fins de demonstração/teste), respeita-o
+    if forcar_status == 'aprovado':
+        aprovado = True
+    elif forcar_status == 'recusado':
+        aprovado = False
+    else:
+        # Caso não tenha sido forçado, simula 95% de aprovação
+        aprovado = random.random() > 0.05
     
     if aprovado:
         return {

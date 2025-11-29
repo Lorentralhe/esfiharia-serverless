@@ -91,7 +91,7 @@ Health check da API.
 - **Método:** POST
 - **URL:** `http://localhost:5000/pedidos`
 - **Headers:** `Content-Type: application/json`
-- **Body (raw JSON):**
+- **Body (raw JSON) – exemplo simples:**
 ```json
 {
   "cliente": {
@@ -109,6 +109,36 @@ Health check da API.
       "quantidade": 2
     }
   ]
+}
+```
+
+Se quiser **forçar o resultado do pagamento** (útil para demonstração):
+
+- Atributo opcional: `forcar_status_pagamento`
+- Valores aceitos:
+  - `"aprovado"` → pagamento sempre aprovado
+  - `"recusado"` → pagamento sempre recusado
+
+Exemplo forçando pagamento aprovado:
+
+```json
+{
+  "cliente": {
+    "nome": "Maria Santos",
+    "email": "maria@example.com",
+    "telefone": "11888888888"
+  },
+  "itens": [
+    {
+      "tipo": "esfiha_frango",
+      "quantidade": 5
+    },
+    {
+      "tipo": "esfiha_4_queijos",
+      "quantidade": 2
+    }
+  ],
+  "forcar_status_pagamento": "aprovado"
 }
 ```
 

@@ -22,6 +22,10 @@ def receber_pedido_handler(event: dict, context: dict) -> dict:
         # Gera ID único para o pedido
         pedido_id = str(uuid.uuid4())
         
+        # Campo opcional para forçar resultado do pagamento (apenas para testes/demo)
+        # Valores aceitos: "aprovado" ou "recusado"
+        forcar_status_pagamento = event.get('forcar_status_pagamento')
+
         # Prepara dados do pedido
         pedido_data = {
             'pedido_id': pedido_id,
@@ -40,6 +44,7 @@ def receber_pedido_handler(event: dict, context: dict) -> dict:
         evento = {
             'tipo': 'pedido_recebido',
             'pedido_id': pedido_id,
+            'forcar_status_pagamento': forcar_status_pagamento,
             'cliente': event.get('cliente'),
             'itens': event.get('itens', []),
             'total': pedido_data['total'],
