@@ -52,6 +52,15 @@ def receber_pedido_handler(event: dict, context: dict) -> dict:
         }
         
         topic.publish(evento)
+
+        # Para fins de demonstração local, processamos imediatamente as filas SQS
+        # no mesmo processo, garantindo que o status do pedido seja atualizado
+        # logo após a criação.
+        try:
+            from config.setup import processar_filas
+            processar_filas()
+        except Exception as e:
+            logger.error(f'Erro ao processar filas após receber pedido: {e}')
         
         logger.info(f"Pedido {pedido_id} processado e evento publicado")
         
