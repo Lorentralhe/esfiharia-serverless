@@ -15,7 +15,6 @@ data_dir.mkdir(exist_ok=True)
 # Inicializa TinyDB com cache
 db_pedidos = TinyDB('data/pedidos.json', storage=CachingMiddleware(JSONStorage))
 db_estoque = TinyDB('data/estoque.json', storage=CachingMiddleware(JSONStorage))
-db_reservas = TinyDB('data/reservas.json', storage=CachingMiddleware(JSONStorage))
 
 Pedido = Query()
 Estoque = Query()
