@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Esfiharia - Sistema de Pedidos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        .endpoint:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+
+        .method-get {
+            background: #28a745;
+            color: white;
+        }
+
+        .method-post {
+            background: #007bff;
+            color: white;
+        }
+
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .endpoint-desc {
+            margin-top: 10px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .code-block .key {
+            color: #f92672;
+        }
+
+        .code-block .string {
+            color: #e6db74;
+        }
+
+        .code-block .number {
+            color: #ae81ff;
+        }
+
+        .example-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .tip strong {
+            color: #0c5460;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .status-online {
+            background: #28a745;
+            color: white;
+        }
+
+        .esfiha-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .esfiha-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .esfiha-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍕 API Esfiharia</h1>
+            <p>Sistema de Pedidos Serverless</p>
+            <span class="status-badge status-online">● Online</span>
+        </div>
+
+        <div class="content">
+            <!-- Seção de Endpoints -->
+            <div class="section">
+                <h2>📡 Endpoints Disponíveis</h2>
+                
+                <div class="endpoint">
+                    <span class="endpoint-method method-get">GET</span>
+                    <span class="endpoint-url">/health</span>
+                    <div class="endpoint-desc">
+                        Verifica o status da API. Retorna se o serviço está funcionando.
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-url">/pedidos</span>
+                    <div class="endpoint-desc">
+                        Cria um novo pedido de esfihas. Requer dados do cliente e itens do pedido.
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="endpoint-method method-get">GET</span>
+                    <span class="endpoint-url">/pedidos/&lt;pedido_id&gt;</span>
+                    <div class="endpoint-desc">
+                        Consulta um pedido específico pelo seu ID. Retorna todos os detalhes do pedido.
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="endpoint-method method-get">GET</span>
+                    <span class="endpoint-url">/estoque</span>
+                    <div class="endpoint-desc">
+                        Consulta o estoque disponível de todas as esfihas.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Como Fazer Pedidos -->
+            <div class="section">
+                <h2>📝 Como Fazer um Pedido</h2>
+                
+                <div class="example-box">
+                    <h3>1. Estrutura do Pedido</h3>
+                    <p>Um pedido deve conter:</p>
+                    <ul style="margin: 10px 0 10px 20px; line-height: 1.8;">
+                        <li><strong>cliente</strong>: Dados do cliente (nome, email, telefone)</li>
+                        <li><strong>itens</strong>: Lista de esfihas desejadas (tipo e quantidade)</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>2. Exemplo de Requisição (Postman/curl)</h3>
+                    <p><strong>URL:</strong> <code>http://localhost:5000/pedidos</code></p>
+                    <p><strong>Método:</strong> POST</p>
+                    <p><strong>Headers:</strong></p>
+                    <div class="code-block">
+Content-Type: application/json
+                    </div>
+                    <p><strong>Body (JSON):</strong></p>
+                    <div class="code-block">
+{
+  <span class="key">"cliente"</span>: {
+    <span class="key">"nome"</span>: <span class="string">"João Silva"</span>,
+    <span class="key">"email"</span>: <span class="string">"joao@example.com"</span>,
+    <span class="key">"telefone"</span>: <span class="string">"11999999999"</span>
+  },
+  <span class="key">"itens"</span>: [
+    {
+      <span class="key">"tipo"</span>: <span class="string">"esfiha_carne"</span>,
+      <span class="key">"quantidade"</span>: <span class="number">2</span>
+    },
+    {
+      <span class="key">"tipo"</span>: <span class="string">"esfiha_queijo"</span>,
+      <span class="key">"quantidade"</span>: <span class="number">3</span>
+    }
+  ]
+}
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h3>3. Exemplo com cURL</h3>
+                    <div class="code-block">
+curl -X POST http://localhost:5000/pedidos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cliente": {
+      "nome": "Maria Santos",
+      "email": "maria@example.com",
+      "telefone": "11888888888"
+    },
+    "itens": [
+      {"tipo": "esfiha_frango", "quantidade": 5},
+      {"tipo": "esfiha_4_queijos", "quantidade": 2}
+    ]
+  }'
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipos de Esfihas -->
+            <div class="section">
+                <h2>🍕 Tipos de Esfihas Disponíveis</h2>
+                <div class="esfiha-types">
+                    <div class="esfiha-item">
+                        <strong>esfiha_carne</strong>
+                        <span>R$ 3,50</span>
+                    </div>
+                    <div class="esfiha-item">
+                        <strong>esfiha_frango</strong>
+                        <span>R$ 3,50</span>
+                    </div>
+                    <div class="esfiha-item">
+                        <strong>esfiha_queijo</strong>
+                        <span>R$ 3,00</span>
+                    </div>
+                    <div class="esfiha-item">
+                        <strong>esfiha_espinafre</strong>
+                        <span>R$ 3,00</span>
+                    </div>
+                    <div class="esfiha-item">
+                        <strong>esfiha_pizza</strong>
+                        <span>R$ 3,50</span>
+                    </div>
+                    <div class="esfiha-item">
+                        <strong>esfiha_4_queijos</strong>
+                        <span>R$ 4,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dicas -->
+            <div class="section">
+                <h2>💡 Dicas Importantes</h2>
+                <div class="tip">
+                    <strong>⚠️ Importante:</strong> Para o sistema funcionar completamente, você precisa ter o <strong>worker</strong> rodando em outro terminal. O worker processa as filas SQS e executa as funções Lambda.
+                    <br><br>
+                    <strong>Comando:</strong> <code>python worker.py</code>
+                </div>
+                <div class="tip">
+                    <strong>📋 Fluxo do Sistema:</strong>
+                    <ol style="margin: 10px 0 0 20px; line-height: 1.8;">
+                        <li>Cliente faz pedido → API Gateway</li>
+                        <li>Receber_Pedido → Salva no banco e publica no SNS "Eventos_Pedidos"</li>
+                        <li>SNS distribui para fila de Pagamentos</li>
+                        <li>Worker processa fila → Executa Processar_Pagamento</li>
+                        <li>Pagamento aprovado → Publica no SNS "Pagamento_Concluido"</li>
+                        <li>SNS atualiza status do pedido no banco de dados</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>API Esfiharia v1.0.0 | Sistema Serverless com Flask, TinyDB, SQS e SNS</p>
+        </div>
+    </div>
+</body>
+</html>
+
